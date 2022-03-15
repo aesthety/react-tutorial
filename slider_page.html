@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/jquery.easie.js"></script>
+    <title>slider one page 연습</title>
+    <style>
+        /* reset css */
+        *{margin: 0;padding: 0;box-sizing: border-box;}
+        li{list-style: none;}
+        a{text-decoration: none;color: #333;}
+
+        /* topMenu , header */
+        #topMenu{background: #2c3e50;width: 100%;height: 50px;position: relative;color: #fff;}
+        header{width: 100%;background: linear-gradient(to bottom, #42275aa2, #734b6d70);}
+        .addfix{position: fixed;top: 0;z-index: 99999;}
+
+        .gnb{width: 630px;display: flex;margin: 0 auto; padding:30px 0;}
+        .gnb li{margin-right: 10px;}
+        .gnb li:last-child{margin-right: 0;}
+        .gnb a{display: block;  width: 150px;padding: 10px;
+            font-size: 1.2em; color: #ffe7e7;
+            text-align: center;background: #FD746C;
+            font-weight: bold;
+        }
+        .gnb a:hover, .gnb a.on{background: #2c3e50;color: #dfe3e6;}
+
+        /* 우측 고정 버튼 */
+        #right_gnb{
+            position: fixed;
+            width: 20px;height: 140px;
+            top: 50%;right: 50px;
+            transform: translateY(-50%);
+        }
+        #right_gnb a{
+            display: block;width: 20px;height: 20px;
+            background: #aaa;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+        #right_gnb a:hover, #right_gnb a.on{
+            background: none;
+            border: 1px solid #aaa;
+        }
+        /* 하단고정배너 */
+        #bannerBox{
+            width: 100%;height: 70px;
+            position: fixed;bottom: -70px;
+            background: rgba(11, 28, 75, 0.5);
+            color: #fff;
+        }
+        /* 우측하단고정 goTop버튼 */
+        .goTop{
+            width: 50px;height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #bbb;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 50px;right: 150px;
+            display: none;
+        }
+        /* 섹션공통 */
+        section{
+            width: 80%;position: relative;
+            padding: 5%;
+            margin: 50px auto;
+            font-size: 5.0em; color: #fff;
+        }
+        /* 각섹션 : 배경색, 높이값 */
+        #section1{
+            background: linear-gradient(to bottom, #FF5F6D, #FFC371);
+            height: 700px;
+        }
+        #section2{
+            background: linear-gradient(to bottom, #96c93d, #6be585);
+            height: 550px;
+        }
+        #section3{
+            background: linear-gradient(to bottom, #654ea3, #eaafc8);
+            height: 800px;
+        }
+        #section4{
+            background: linear-gradient(to bottom, #007991, #78ffd6);
+            height: 600px;
+            margin-bottom: 300px;
+        }
+    </style>
+
+    <script>
+        $(function(){
+            // offset().top, scrollTop(), scrollTop, height(), animate()
+            // 하단 배너박스 : 브라우저하단에서 올라오도록
+            $('#bannerBox').animate({'bottom' : '0'},600);
+
+            let sec1 = $('#section1').offset().top;
+            let sec2 = $('#section2').offset().top-350;
+            let sec3 = $('#section3').offset().top-300;
+            let sec4 = $('#section4').offset().top-350;
+
+            let gnbTop = $('header').offset().top;
+
+            console.log(sec4);
+
+            // 상단메뉴 고정시키는 클래스를 추가, 제거하는 함수
+            function fixGnb(){
+                if($(window).scrollTop() >= gnbTop){
+                    // header에게 addfix클래스를 붙여라
+                    $('header').addClass('addfix');
+                }else{
+                    $('header').removeClass('addfix');
+                }
+            }
+            // 상단, 우측 고정메뉴에 on클래스 제거하는 리셋함수
+            function resetBtn(){
+                $('.gnb a').removeClass('on');
+                $('#right_gnb a').removeClass('on');
+            }
+            // 상단, 우측 고정메뉴에 on클래스 추가하는 함수
+            function btnAdd(gnb, rightGnb){
+                // 스크롤이 일어났을 때 해당 섹션 높이값에 도착하면, 각 섹션에 해당하는 버튼에 클래스 추가
+                $(gnb).addClass('on');
+                $(rightGnb).addClass('on');
+            }
+
+            $(window).scroll(function(){
+                fixGnb();
+                let scroll = $(window).scrollTop();
+               console.log(scroll);
+                if(scroll>sec1){
+                    resetBtn();
+                    btnAdd('.btn1', '.btnR1');
+                }
+                if(scroll>sec2){
+                    resetBtn();
+                    btnAdd('.btn2', '.btnR2');
+                }
+                if(scroll>sec3){
+                    resetBtn();
+                    btnAdd('.btn3', '.btnR3');                    
+                }
+                if(scroll>sec4){
+                    resetBtn();
+                    btnAdd('.btn4', '.btnR4');                    
+                }
+
+                if(scroll>0 && scroll<300){
+                    $('.goTop').fadeOut();
+                }
+                if(scroll>300){
+                    $('.goTop').fadeIn();
+                }
+            });
+
+            $('.btn1, .btnR1, .goTop').click(function(e){
+                e.preventDefault();
+                $('html, body').animate({'scrollTop':0},1500);
+                resetBtn();
+                btnAdd('.btn1', '.btnR1');
+            });
+            $('.btn2, .btnR2').click(function(e){
+                e.preventDefault();
+                $('html, body').animate({'scrollTop':sec2+70},1500);
+                resetBtn();
+                btnAdd('.btn2', '.btnR2');
+            });
+            $('.btn3, .btnR3').click(function(e){
+                e.preventDefault();
+                $('html, body').animate({'scrollTop':sec3+30},1500);
+                resetBtn();
+                btnAdd('.btn3', '.btnR3');  
+            });
+            $('.btn4, .btnR4').click(function(e){
+                e.preventDefault();
+                $('html, body').animate({'scrollTop':sec4+40},1500);
+                resetBtn();
+                btnAdd('.btn4', '.btnR4');
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div id="topMenu">topMenu</div>
+    <header>
+        <ul class="gnb">
+            <li><a href="#section1" class="btn1 on">MENU</a></li>
+            <li><a href="#section2" class="btn2">MENU</a></li>
+            <li><a href="#section3" class="btn3">MENU</a></li>
+            <li><a href="#section4" class="btn4">MENU</a></li>
+        </ul>
+    </header>
+    <nav id="right_gnb">
+        <ul>
+            <li><a href="#section1" class="btnR1 on"></a></li>
+            <li><a href="#section2" class="btnR2"></a></li>
+            <li><a href="#section3" class="btnR3"></a></li>
+            <li><a href="#section4" class="btnR4"></a></li>
+        </ul>
+    </nav>
+    <section id="section1">SECTION1</section>
+    <section id="section2">SECTION2</section>
+    <section id="section3">SECTION3</section>
+    <section id="section4">SECTION4</section>
+    
+
+    <div id="bannerBox">bannerBox</div>
+
+    <a href="#" class="goTop">Top</a>
+</body>
+</html>

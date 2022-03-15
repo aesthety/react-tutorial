@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-2.2.4.min.js"></script>
+    
+</head>
+
+<body>
+    <a href="index.html" id="intro_goindex">
+        <div id="intro_wrap">
+            <ul id="intro">
+                <li class="intro_logo">LOGO</li>
+                <li class="slogan">une baleine nageant dans une mer parfum</li>
+            </ul>
+        </div>
+    </a>
+    <script>
+        $(function () {
+
+            $('.intro_logo').hide();
+            $('.slogan').hide();
+
+            $('#intro_goindex').on('click',function () {                
+                $('.intro_logo').fadeIn(1800);
+                $('.slogan').fadeIn(2600);
+                $('#intro_goindex').off('click');
+            }), click(function () {
+
+            });
+
+        }); 
+    </script>
+</body>
+
+</html>
